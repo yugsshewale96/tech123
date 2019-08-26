@@ -1,0 +1,153 @@
+Assignment 1:
+sayali chaudhari
+yugandhara shewale
+
+
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 1
+Server version: 5.5.61 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| adventureworks     |
+| adventureworks1    |
+| day1               |
+| db2                |
+| dbms1              |
+| exam               |
+| mydb               |
+| mysql              |
+| performance_schema |
+| sales              |
+| tempo              |
+| test               |
+| tg                 |
+| tg1                |
+| tg2                |
+| vita_db            |
++--------------------+
+17 rows in set (0.01 sec)
+
+mysql> create database techworks;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| adventureworks     |
+| adventureworks1    |
+| day1               |
+| db2                |
+| dbms1              |
+| exam               |
+| mydb               |
+| mysql              |
+| performance_schema |
+| sales              |
+| techworks          |
+| tempo              |
+| test               |
+| tg                 |
+| tg1                |
+| tg2                |
+| vita_db            |
++--------------------+
+18 rows in set (0.51 sec)
+
+mysql> use techworks;
+Database changed
+mysql> create table tycoons
+    -> (
+    -> tid int primary key,name varchar(20),phoneno int(10),city varchar(10));
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> select * from tycoons;
+Empty set (0.00 sec)
+
+mysql> insert into tycoons values(1,'sayali',4564228787,'mumbai');
+ERROR 1264 (22003): Out of range value for column 'phoneno' at row 1
+mysql> alter table tycoons;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into tycoons values(1,'sayali',4564,'mumbai');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from tycoons;
++-----+--------+---------+--------+
+| tid | name   | phoneno | city   |
++-----+--------+---------+--------+
+|   1 | sayali |    4564 | mumbai |
++-----+--------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into tycoons values(2,'yuga',8956,'nashik'),(3,'sayu',7862,'dadar');
+Query OK, 2 rows affected (0.07 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from tycoons;
++-----+--------+---------+--------+
+| tid | name   | phoneno | city   |
++-----+--------+---------+--------+
+|   1 | sayali |    4564 | mumbai |
+|   2 | yuga   |    8956 | nashik |
+|   3 | sayu   |    7862 | dadar  |
++-----+--------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> delete from tycoons
+    -> where tid=3;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from tycoons;
++-----+--------+---------+--------+
+| tid | name   | phoneno | city   |
++-----+--------+---------+--------+
+|   1 | sayali |    4564 | mumbai |
+|   2 | yuga   |    8956 | nashik |
++-----+--------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> update tycoons
+    -> set name='yugandhara' where tid=2;
+Query OK, 1 row affected (0.16 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from tycoons;
++-----+------------+---------+--------+
+| tid | name       | phoneno | city   |
++-----+------------+---------+--------+
+|   1 | sayali     |    4564 | mumbai |
+|   2 | yugandhara |    8956 | nashik |
++-----+------------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> truncate tycoons;
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> select * from tycoons;
+Empty set (0.00 sec)
+
+mysql> drop tycoons;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tycoons' at line 1
+mysql> drop table tycoons;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from tycoons;
+ERROR 1146 (42S02): Table 'techworks.tycoons' doesn't exist
+mysql>
