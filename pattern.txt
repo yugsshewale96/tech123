@@ -1,0 +1,411 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.5.61 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| adventureeworks    |
+| adventureworks     |
+| adventureworks1    |
+| day1               |
+| db2                |
+| dbms1              |
+| exam               |
+| mydb               |
+| mysql              |
+| performance_schema |
+| sales              |
+| techworks          |
+| tempo              |
+| test               |
+| tg                 |
+| tg1                |
+| tg2                |
+| vita_db            |
++--------------------+
+19 rows in set (0.02 sec)
+
+mysql>  use techworks
+Database changed
+mysql> create table Salespeople
+    -> (
+    -> SNUM int primary key,
+    -> SNAME varchar9200,
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar9200,' at line 4
+mysql> create table Salespeople
+    -> (
+    -> SNUM int primary key,
+    -> SNAME varchar(200,
+    -> CITY varchar(20),
+    -> COMM decimal(4,2)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+CITY varchar(20),
+COMM decimal(4,2)
+)' at line 4
+mysql> create table Salespeople
+    -> (
+    -> SNUM int primary key,
+    -> SNAME varchar(20),
+    -> CITY varchar(20),
+    -> COMM decimal(8,2)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> describe Salespeople;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| SNUM  | int(11)      | NO   | PRI | NULL    |       |
+| SNAME | varchar(20)  | YES  |     | NULL    |       |
+| CITY  | varchar(20)  | YES  |     | NULL    |       |
+| COMM  | decimal(8,2) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> insert into Salespeople values(1001.'Peel','London',.12);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Peel','London',.12)' at line 1
+mysql> insert into Salespeople values(1001,'Peel','London',.12);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into Salespeople values(1002,'Serres','San Jose',.13);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into Salespeople values(1004,'Motika','London',.11);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into Salespeople values(1007,'Rifkin','Barcelona',.15);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Salespeople values(1003,'AxelRod','New York',.10);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into Salespeople values(1005,'Fran','London',.26);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Salespeople;
++------+---------+-----------+------+
+| SNUM | SNAME   | CITY      | COMM |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | San Jose  | 0.13 |
+| 1003 | AxelRod | New York  | 0.10 |
+| 1004 | Motika  | London    | 0.11 |
+| 1005 | Fran    | London    | 0.26 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
++------+---------+-----------+------+
+6 rows in set (0.00 sec)
+
+mysql> create table customers
+    -> (
+    -> CNUM int primary key,
+    -> CNAME varchar(20),
+    -> CITY varchar(20),
+    -> RATING int,
+    -> SNUM int
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> describe customers;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| CNUM   | int(11)     | NO   | PRI | NULL    |       |
+| CNAME  | varchar(20) | YES  |     | NULL    |       |
+| CITY   | varchar(20) | YES  |     | NULL    |       |
+| RATING | int(11)     | YES  |     | NULL    |       |
+| SNUM   | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> insert into customers values
+    -> (
+    -> 2001,'Hoffman','London',100,1001);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into customers values
+    -> (
+    -> 2002,'Giovanni','Rome',200,1003);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into customers values
+    -> (
+    -> 2003,'Liu','San Jose',200,1002);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into customers values
+    -> (
+    -> 2004,'Grass','Berlin',300,1002);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into customers values
+    -> (
+    -> 2006,'Clemens','London',100,1001);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into customers values
+    -> (
+    -> 2008,'Cisneros','San Jose',300,1007);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into customers values
+    -> (
+    -> 2007,'Pereira','Rome',100,1004);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| CNUM | CNAME    | CITY     | RATING | SNUM |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | London   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | London   |    100 | 1001 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> create table employee
+    -> (eid int,
+    -> ename varchar(20),
+    -> phone char(10),
+    -> city varchar(20)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> describe employee;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eid   | int(11)     | YES  |     | NULL    |       |
+| ename | varchar(20) | YES  |     | NULL    |       |
+| phone | char(10)    | YES  |     | NULL    |       |
+| city  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> alter table employee
+    -> add constraint pk
+    -> primary key(eid,ename);
+Query OK, 0 rows affected (0.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe employee;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eid   | int(11)     | NO   | PRI | 0       |       |
+| ename | varchar(20) | NO   | PRI |         |       |
+| phone | char(10)    | YES  |     | NULL    |       |
+| city  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> insert into employee
+    -> values(100,'sayu','48454253','nashik'),(101,'yuga','54541245','mumbai'),(102,'raveena','852963741','kandivali');
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-----+---------+-----------+-----------+
+| eid | ename   | phone     | city      |
++-----+---------+-----------+-----------+
+| 100 | sayu    | 48454253  | nashik    |
+| 101 | yuga    | 54541245  | mumbai    |
+| 102 | raveena | 852963741 | kandivali |
++-----+---------+-----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> create table student
+    -> (
+    -> sid int ,
+    -> sname varchar(20),
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 4
+mysql> create table a
+    -> (
+    -> x int,
+    -> y int,
+    -> constraint a_pk primary key(x,y));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table b
+    -> (
+    -> x int,
+    -> y int,
+    -> constraint b_fk foreign key(x,y) refrences a(x,y));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refrences a(x,y))' at line 5
+mysql> create table b
+    -> (
+    -> x int,
+    -> y int,
+    -> constraint b_fk foreign key(x,y) references a(x,y));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> insert into a values(1,1),(1,2);
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into a values(1,1);
+ERROR 1062 (23000): Duplicate entry '1-1' for key 'PRIMARY'
+mysql> insert into b values(1,1),(1,2);
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into b values(2,1);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`techworks`.`b`, CONSTRAINT `b_fk` FOREIGN KEY (`x`, `y`) REFERENCES `a` (`x`, `y`))
+mysql> insert into a values('null');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into a values(null,null);
+ERROR 1048 (23000): Column 'x' cannot be null
+mysql> insert into b values(null,null);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> show tables
+    -> ;
++---------------------+
+| Tables_in_techworks |
++---------------------+
+| a                   |
+| b                   |
+| customers           |
+| employee            |
+| product             |
+| salespeople         |
++---------------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from product;
++----+------------+------------------+
+| Id | membership | hobbies          |
++----+------------+------------------+
+|  1 | Gold       | swimming         |
+|  2 | silver     | swimming,singing |
+|  3 | silver     | singing          |
+|  4 | Platinum   | swimming         |
++----+------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql>     select Id,membership
+    -> from product
+    -> where Id=2;
++----+------------+
+| Id | membership |
++----+------------+
+|  2 | silver     |
++----+------------+
+1 row in set (0.00 sec)
+
+mysql>     select Id,membership
+    -> from product
+    -> where Id <>2
+    -> ;
++----+------------+
+| Id | membership |
++----+------------+
+|  1 | Gold       |
+|  3 | silver     |
+|  4 | Platinum   |
++----+------------+
+3 rows in set (0.01 sec)
+
+mysql>     select Id,membership
+    -> from product
+    -> where Id<>1;
++----+------------+
+| Id | membership |
++----+------------+
+|  2 | silver     |
+|  3 | silver     |
+|  4 | Platinum   |
++----+------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE BOOKSTORE
+    -> (
+    -> branch varchar(20), author varchar(20), price decimal(4,1));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> describe BOOKSTORE
+    -> ;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| branch | varchar(20)  | YES  |     | NULL    |       |
+| author | varchar(20)  | YES  |     | NULL    |       |
+| price  | decimal(4,1) | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> INSERT INTO BOOKSTORE
+    -> VALUES
+    -> ('CIVIL','A SHARMA',250.5),('EXTC','KUMBHOJKAR',280);
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM BOOKSTORE;
++--------+------------+-------+
+| branch | author     | price |
++--------+------------+-------+
+| CIVIL  | A SHARMA   | 250.5 |
+| EXTC   | KUMBHOJKAR | 280.0 |
++--------+------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT branch,author from BOOKSTORE;
++--------+------------+
+| branch | author     |
++--------+------------+
+| CIVIL  | A SHARMA   |
+| EXTC   | KUMBHOJKAR |
++--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT branch,author from BOOKSTORE
+    -> where branch LIKE 'C%';
++--------+----------+
+| branch | author   |
++--------+----------+
+| CIVIL  | A SHARMA |
++--------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT branch,author from BOOKSTORE
+    -> where branch LIKE '%c';
++--------+------------+
+| branch | author     |
++--------+------------+
+| EXTC   | KUMBHOJKAR |
++--------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT branch,author from BOOKSTORE
+    -> where branch LIKE '%c%';
++--------+------------+
+| branch | author     |
++--------+------------+
+| CIVIL  | A SHARMA   |
+| EXTC   | KUMBHOJKAR |
++--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT branch,author from BOOKSTORE
+    -> where branch LIKE '%r';
+Empty set (0.00 sec)
+
+mysql>
