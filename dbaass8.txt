@@ -1,0 +1,583 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.5.61 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use ad2
+Database changed
+mysql> use adventureworks;
+Database changed
+mysql> show tables;
++--------------------------+
+| Tables_in_adventureworks |
++--------------------------+
+| data                     |
+| numdatatypes             |
+| student                  |
+| textdatatypes            |
++--------------------------+
+4 rows in set (0.01 sec)
+
+mysql> use ad1
+Database changed
+mysql> show tables;
++---------------+
+| Tables_in_ad1 |
++---------------+
+| a             |
+| b             |
+| book          |
+| booktranc     |
+| employee      |
+| member        |
+| salespeople   |
+| spldatatypes  |
++---------------+
+8 rows in set (0.01 sec)
+
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| snum | sname   | city      | comm |
++------+---------+-----------+------+
+| 1001 | peel    | london    | 0.12 |
+| 1002 | serres  | sanjose   | 0.13 |
+| 1003 | axelrod | NY        | 0.10 |
+| 1004 | motika  | london    | 0.11 |
+| 1005 | fran    | london    | 0.26 |
+| 1007 | rifkin  | barcelona | 0.15 |
++------+---------+-----------+------+
+6 rows in set (0.04 sec)
+
+mysql> create table customers
+    -> values
+    -> (
+    -> cnum int,
+    -> cname varchar(20),
+    -> city varchar(20),
+    -> rating int,
+    -> snum int
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values
+(
+cnum int,
+cname varchar(20),
+city varchar(20),
+rating int,
+snum int
+)' at line 2
+mysql> create table customers
+    -> (
+    -> cnum int primary key,
+    -> cname varchar(20),
+    -> city varchar(20),
+    -> rating int,
+    -> snum int
+    -> );
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> drop table customers;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table customers
+    -> {
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '{' at line 2
+mysql> create table customers
+    -> (
+    -> cnum int primary key,
+    -> cname varchar(20),
+    -> city varchar(20),
+    -> rating int,
+    -> snum int,
+    -> constraint customers_snum_fk foreign key(snum) references salespeople(snum));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> describe customers;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| cnum   | int(11)     | NO   | PRI | NULL    |       |
+| cname  | varchar(20) | YES  |     | NULL    |       |
+| city   | varchar(20) | YES  |     | NULL    |       |
+| rating | int(11)     | YES  |     | NULL    |       |
+| snum   | int(11)     | YES  | MUL | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> insert into customers
+    -> values
+    -> (2001,'hoffman','london',100,1001),
+    -> (2002,'giovanni','rome',200,1003),
+    -> (2003,'liu','san jose',200,1002),
+    -> (2004,'grass','barlin',300,1002),
+    -> (2005,'ciemens','london',100,1001),
+    -> (2008,'cisneros','san jose',300,1007),
+    -> (2009,'pereira','rome',100,1004);
+Query OK, 7 rows affected (0.04 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| cnum | cname    | city     | rating | snum |
++------+----------+----------+--------+------+
+| 2001 | hoffman  | london   |    100 | 1001 |
+| 2002 | giovanni | rome     |    200 | 1003 |
+| 2003 | liu      | san jose |    200 | 1002 |
+| 2004 | grass    | barlin   |    300 | 1002 |
+| 2005 | ciemens  | london   |    100 | 1001 |
+| 2008 | cisneros | san jose |    300 | 1007 |
+| 2009 | pereira  | rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> create table orders
+    -> values
+    -> (
+    -> onum int,
+    -> amt decimal(6,2),
+    -> odate date,
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values
+(
+onum int,
+amt decimal(6,2),
+odate date,' at line 2
+mysql> create table orders
+    -> values
+    -> (
+    -> onum int primary key,
+    -> amt decimal(6,2),
+    -> odate date,
+    -> cnum int,
+    -> snum int,
+    -> constraint orders_cnum_fk foreign key(cnum) references customers(cnum),
+    -> constraint orders_cnum_fk foreign key(snum) references salespeople(snum);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values
+(
+onum int primary key,
+amt decimal(6,2),
+odate date,
+cnum int,
+snum int,' at line 2
+mysql> create table orders
+    -> (
+    -> onum int primary key,
+    -> amt decimal(6,2),
+    -> odate date,
+    -> cnum int,
+    -> snum int,
+    -> constraint orders_cnum_fk foreign key(cnum) references customers(cnum),
+    -> constraint orders_cnum_fk foreign key(snum) references salespeople(snum);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 9
+mysql> create table orders
+    -> (
+    -> onum int primary key,
+    -> amt decimal(6,2),
+    -> odate date,
+    -> cnum int,
+    -> snum int,
+    -> constraint orders_cnum_fk foreign key(cnum) references customers(cnum),
+    -> constraint orders_cnum_fk foreign key(snum) references salespeople(snum)
+    -> );
+ERROR 1061 (42000): Duplicate key name 'orders_cnum_fk'
+mysql> create table orders
+    -> (
+    -> onum int primary key,
+    -> amt decimal(6,2),
+    -> odate date,
+    -> cnum int,
+    -> snum int,
+    -> constraint orders_cnum_fk foreign key(cnum) references customers(cnum),
+    -> constraint orders_snum_fk foreign key(snum) references salespeople(snum)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into orders
+    -> values
+    -> (3001,18.69,'1996-03-10',2008,1007),
+    -> (3003,767.19,'1996-03-10',2001,1001),
+    -> (3002,1900.10,'1996-03-10',2007,1004),
+    -> (3005,5160.45,'1996-03-10',2003,1002),
+    -> (3006,1098.16,'1996-03-10',2008,1007),
+    -> (3009,1713.23,'1996-04-10',2002,1003),
+    -> (3007,75.75,'1996-04-10',2002,1003),
+    -> (3008,4723.00,'1996-05-10',2006,1001),
+    -> (3010,1309.95,'1996-06-10',2004,1002),
+    -> (3011,9891.88,'1996-06-10',2006,1001);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`ad1`.`orders`, CONSTRAINT `orders_cnum_fk` FOREIGN KEY (`cnum`) REFERENCES `customers` (`cnum`))
+mysql> insert into orders
+    -> values
+    -> (3001,18.69,'1996-03-10',2008,1007),
+    -> (3003,767.19,'1996-03-10',2001,1001),
+    -> (3002,1900.10,'1996-03-10',2009,1004),
+    -> (3005,5160.45,'1996-03-10',2003,1002),
+    -> (3006,1098.16,'1996-03-10',2008,1007),
+    -> (3009,1713.23,'1996-04-10',2002,1003),
+    -> (3007,75.75,'1996-04-10',2002,1003),
+    -> (3008,4723.00,'1996-05-10',2005,1001),
+    -> (3010,1309.95,'1996-06-10',2004,1002),
+    -> (3011,9891.88,'1996-06-10',2005,1001);
+Query OK, 10 rows affected (0.03 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| snum | sname   | city      | comm |
++------+---------+-----------+------+
+| 1001 | peel    | london    | 0.12 |
+| 1002 | serres  | sanjose   | 0.13 |
+| 1003 | axelrod | NY        | 0.10 |
+| 1004 | motika  | london    | 0.11 |
+| 1005 | fran    | london    | 0.26 |
+| 1007 | rifkin  | barcelona | 0.15 |
++------+---------+-----------+------+
+6 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------+----------+----------+--------+------+
+| cnum | cname    | city     | rating | snum |
++------+----------+----------+--------+------+
+| 2001 | hoffman  | london   |    100 | 1001 |
+| 2002 | giovanni | rome     |    200 | 1003 |
+| 2003 | liu      | san jose |    200 | 1002 |
+| 2004 | grass    | barlin   |    300 | 1002 |
+| 2005 | ciemens  | london   |    100 | 1001 |
+| 2008 | cisneros | san jose |    300 | 1007 |
+| 2009 | pereira  | rome     |    100 | 1004 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+---------+------------+------+------+
+| onum | amt     | odate      | cnum | snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1996-03-10 | 2008 | 1007 |
+| 3002 | 1900.10 | 1996-03-10 | 2009 | 1004 |
+| 3003 |  767.19 | 1996-03-10 | 2001 | 1001 |
+| 3005 | 5160.45 | 1996-03-10 | 2003 | 1002 |
+| 3006 | 1098.16 | 1996-03-10 | 2008 | 1007 |
+| 3007 |   75.75 | 1996-04-10 | 2002 | 1003 |
+| 3008 | 4723.00 | 1996-05-10 | 2005 | 1001 |
+| 3009 | 1713.23 | 1996-04-10 | 2002 | 1003 |
+| 3010 | 1309.95 | 1996-06-10 | 2004 | 1002 |
+| 3011 | 9891.88 | 1996-06-10 | 2005 | 1001 |
++------+---------+------------+------+------+
+10 rows in set (0.00 sec)
+
+mysql> select * from customers
+    -> where ratings=100;
+ERROR 1054 (42S22): Unknown column 'ratings' in 'where clause'
+mysql> select * from customers,
+    -> where ratings=100;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where ratings=100' at line 2
+mysql> select * from customers,
+    -> where ratings = 100;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where ratings = 100' at line 2
+mysql> select * from customers,
+    -> where rating = 100;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where rating = 100' at line 2
+mysql> select * from customers,
+    -> where rating=100;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where rating=100' at line 2
+
+QN:-2
+
+mysql> select * from customers
+    -> where rating=100;
++------+---------+--------+--------+------+
+| cnum | cname   | city   | rating | snum |
++------+---------+--------+--------+------+
+| 2001 | hoffman | london |    100 | 1001 |
+| 2005 | ciemens | london |    100 | 1001 |
+| 2009 | pereira | rome   |    100 | 1004 |
++------+---------+--------+--------+------+
+3 rows in set (0.00 sec)
+
+QN:-3
+
+mysql> select * from customers
+    -> where city is NULL;
+Empty set (0.00 sec)
+
+mysql> select * from customers
+    -> where city = NULL;
+Empty set (0.00 sec)
+
+mysql> select * from orders
+    -> where order by cnum desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by cnum desc' at line 2
+mysql> where order by cnum desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where order by cnum desc' at line 1
+ 
+QN:-4
+
+mysql> SELECT S.SNUM,S.SNAME, MAX(O.AMT),O.ODATE FROM SALESPEOPLE S INNER JOIN ORDERS O WHERE O.SNUM=S.SNUM
+    -> GROUP BY ODATE,O.SNUM;
++------+---------+------------+------------+
+| SNUM | SNAME   | MAX(O.AMT) | ODATE      |
++------+---------+------------+------------+
+| 1001 | peel    |     767.19 | 1996-03-10 |
+| 1002 | serres  |    5160.45 | 1996-03-10 |
+| 1004 | motika  |    1900.10 | 1996-03-10 |
+| 1007 | rifkin  |    1098.16 | 1996-03-10 |
+| 1003 | axelrod |    1713.23 | 1996-04-10 |
+| 1001 | peel    |    4723.00 | 1996-05-10 |
+| 1001 | peel    |    9891.88 | 1996-06-10 |
+| 1002 | serres  |    1309.95 | 1996-06-10 |
++------+---------+------------+------------+
+8 rows in set (0.00 sec)
+
+QN:-5
+
+mysql> select * from orders
+    -> order by cnum desc;
++------+---------+------------+------+------+
+| onum | amt     | odate      | cnum | snum |
++------+---------+------------+------+------+
+| 3002 | 1900.10 | 1996-03-10 | 2009 | 1004 |
+| 3001 |   18.69 | 1996-03-10 | 2008 | 1007 |
+| 3006 | 1098.16 | 1996-03-10 | 2008 | 1007 |
+| 3008 | 4723.00 | 1996-05-10 | 2005 | 1001 |
+| 3011 | 9891.88 | 1996-06-10 | 2005 | 1001 |
+| 3010 | 1309.95 | 1996-06-10 | 2004 | 1002 |
+| 3005 | 5160.45 | 1996-03-10 | 2003 | 1002 |
+| 3009 | 1713.23 | 1996-04-10 | 2002 | 1003 |
+| 3007 |   75.75 | 1996-04-10 | 2002 | 1003 |
+| 3003 |  767.19 | 1996-03-10 | 2001 | 1001 |
++------+---------+------------+------+------+
+10 rows in set (0.00 sec)
+
+mysql> select * from orders
+    -> where salespeople innerjoin orders
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'innerjoin orders' at line 2
+mysql> select * from orders
+    -> where salespeople innerjoin orders
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'innerjoin orders' at line 2
+mysql> select snum,sname,city
+    -> from salespeople inner join orders
+    -> on salespeople.snum = orders.snum;
+ERROR 1052 (23000): Column 'snum' in field list is ambiguous
+mysql> select snum,sname,city
+    -> from salespeople inner join orders
+    -> on salespeople.snum=orders.snum;
+ERROR 1052 (23000): Column 'snum' in field list is ambiguous
+mysql> select s.num,s.name
+    -> from s.salespeople inner join o.orders
+    -> on s.salespeople.snum=o.orders.snum;
+ERROR 1146 (42S02): Table 's.salespeople' doesn't exist
+mysql> select s.num,s.name
+    -> from s.salespeople inner join o.orders
+    -> on salespeople.snum = orders.snum;
+ERROR 1146 (42S02): Table 's.salespeople' doesn't exist
+mysql> select s.num,s.name
+    -> from salespeople inner join orders
+    -> on s.salespeople.snum = o.orders.snum;
+ERROR 1054 (42S22): Unknown column 's.num' in 'field list'
+mysql> select s.snum,s.sname
+    -> from salespeople inner join orders
+    -> on s.salespeople.snum = o.orders.snum;
+ERROR 1054 (42S22): Unknown column 's.snum' in 'field list'
+mysql> select snum,sname
+    -> from salespeople  s inner join orders o
+    -> on s.salespeople.snum = o.orders.snum;
+ERROR 1052 (23000): Column 'snum' in field list is ambiguous
+mysql> select snum,sname
+    -> from salespeople  s inner join orders o
+    -> on s.snum = o.snum;
+ERROR 1052 (23000): Column 'snum' in field list is ambiguous
+
+QN:-6
+
+mysql> select s.snum,s.sname
+    -> from salespeople  s inner join orders o
+    -> on s.snum = o.snum;
++------+---------+
+| snum | sname   |
++------+---------+
+| 1001 | peel    |
+| 1001 | peel    |
+| 1001 | peel    |
+| 1002 | serres  |
+| 1002 | serres  |
+| 1003 | axelrod |
+| 1003 | axelrod |
+| 1004 | motika  |
+| 1007 | rifkin  |
+| 1007 | rifkin  |
++------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select s.sname
+    -> from customers c inner join salespeople s
+    -> ;
++---------+
+| sname   |
++---------+
+| peel    |
+| serres  |
+| axelrod |
+| motika  |
+| fran    |
+| rifkin  |
+| peel    |
+| serres  |
+| axelrod |
+| motika  |
+| fran    |
+| rifkin  |
+| peel    |
+| serres  |
+| axelrod |
+| motika  |
+| fran    |
+| rifkin  |
+| peel    |
+| serres  |
+| axelrod |
+| motika  |
+| fran    |
+| rifkin  |
+| peel    |
+| serres  |
+| axelrod |
+| motika  |
+| fran    |
+| rifkin  |
+| peel    |
+| serres  |
+| axelrod |
+| motika  |
+| fran    |
+| rifkin  |
+| peel    |
+| serres  |
+| axelrod |
+| motika  |
+| fran    |
+| rifkin  |
++---------+
+42 rows in set (0.00 sec)
+
+mysql> select s.sname
+    -> ;
+ERROR 1109 (42S02): Unknown table 's' in field list
+mysql> select q.sname
+    -> ;
+ERROR 1109 (42S02): Unknown table 'q' in field list
+mysql> select c.cname
+    -> from customers c inner join salespeople s
+    -> on c.cname=s.sname;
+Empty set (0.00 sec)
+
+mysql> select c.cname,s.sname
+    -> from customers c inner join salespeople s
+    -> on c.cname=s.sname;
+Empty set (0.00 sec)
+
+mysql> select s.sname,c.cname
+    -> from salespeople s inner join customers c
+    -> on c.cname=s.sname;
+Empty set (0.00 sec)
+
+mysql> select s.sname
+    -> from salespeople s inner join customers c
+    -> on c.cname=s.sname;
+Empty set (0.00 sec)
+
+mysql> select c.cname
+    -> from  customers c inner join orders o
+    -> on c.cnum=o.onum
+    -> group by o.cnum;
+Empty set (0.00 sec)
+
+QN:-7
+
+mysql> select c.cname
+    -> from  customers c inner join orders o
+    -> on c.cnum=o.cnum
+    -> group by o.cnum;
++----------+
+| cname    |
++----------+
+| hoffman  |
+| giovanni |
+| liu      |
+| grass    |
+| ciemens  |
+| cisneros |
+| pereira  |
++----------+
+7 rows in set (0.00 sec)
+
+mysql>
+mysql>                                                                                                                                                                                               
+mysql> select snum,sname
+    -> ;
+ERROR 1054 (42S22): Unknown column 'snum' in 'field list'
+mysql> select s.snum,s.sname
+    -> from customers c inner joins salespeople s
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'joins salespeople s' at line 2
+mysql> select s.snum,s.sname
+    -> select s.snum,s.sname
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select s.snum,s.sname' at line 2
+mysql> select s.snum,s.sname
+    -> from salespeople p inner joins customers c
+    -> on s.snum = c.cnum;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'joins customers c
+on s.snum = c.cnum' at line 2
+mysql> select s.snum,s.sname
+    -> from salespeople p inner joins customers c
+    -> on s.snum = c.cnum;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'joins customers c
+on s.snum = c.cnum' at line 2
+mysql> select s.snum,s.sname
+    -> from salespeople p inner join customers c
+    -> on s.snum = c.cnum;
+ERROR 1054 (42S22): Unknown column 's.snum' in 'field list'
+mysql>
+mysql> select s.snum,s.sname
+    -> from salespeople s inner join customers c
+    -> on s.snum = c.cnum;
+Empty set (0.00 sec)
+
+mysql> select s.snum,s.sname
+    -> from salespeople s inner join customers c
+    -> on s.sname = c.name;
+ERROR 1054 (42S22): Unknown column 'c.name' in 'on clause'
+mysql>
+mysql>
+mysql> select s.snum,s.sname
+    -> from salespeople s inner join customers c
+    -> on s.snum=c.snum
+    -> group by c.snum having count (c.snum) > 1;
+ERROR 1630 (42000): FUNCTION ad1.count does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql>
+mysql>
+
+QN:-8
+
+mysql> select s.snum,s.sname
+    -> from salespeople s inner join customers c
+    -> on s.snum=c.snum
+    -> group by c.snum having count(c.snum) > 1;
++------+--------+
+| snum | sname  |
++------+--------+
+| 1001 | peel   |
+| 1002 | serres |
++------+--------+
+2 rows in set (0.00 sec)
+
+mysql>
